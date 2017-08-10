@@ -3,4 +3,4 @@ FROM java:8-jre
 ADD ./target/monitoring.jar /app/
 CMD ["java", "-Xmx200m", "-jar", "/app/monitoring.jar"]
 
-EXPOSE 8088
+EXPOSE 8089

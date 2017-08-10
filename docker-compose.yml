@@ -1,0 +1,95 @@
+version: '2.1'
+services:
+
+  config:
+    build: config
+    image: gary/bestbudget-config
+    restart: always
+    ports:
+      - 8888:8888
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+
+  registry:
+    build: registry
+    image: gary/bestbudget-registry
+    restart: always
+    ports:
+      - 8099:8099
+    depends_on:
+      config:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+
+  gateway:
+    build: gateway
+    image: gary/bestbudget-gateway
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      config:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+
+  auth-service:
+    build: auth-service
+    image: gary/bestbudget-auth-service
+    restart: always
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
+      STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
+      ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
+      MONGODB_PASSWORD: $MONGODB_PASSWORD
+    ports:
+      - 8011:8011
+    depends_on:
+      config:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  auth-mongodb:
+    build: mongodb
+    image: gary/bestbudget-mongodb
+    restart: always
+    environment:
+      MONGODB_PASSWORD: $MONGODB_PASSWORD
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  monitoring:
+    build: monitoring
+    image: gary/bestbudget-monitoring
+    restart: always
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    ports:
+      - 8089:8089
+      - 8989:8989
+    depends_on:
+      config:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
