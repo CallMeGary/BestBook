@@ -1,9 +1,18 @@
-version: '2.1'
+version: '3.1'
 services:
+  mysql:
+    image: mysql/mysql-server:5.7
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_DATABASE: "bestbook"
+      MYSQL_USER: "bestbook"
+      MYSQL_PASSWORD: "1bestbook!"
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
 
   config:
     build: config
-    image: gary/bestbudget-config
+    image: bestbook/config
     restart: always
     ports:
       - 8888:8888
@@ -11,84 +20,29 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
 
   registry:
     build: registry
-    image: gary/bestbudget-registry
+    image: bestbook/registry
     restart: always
     ports:
-      - 8099:8099
+      - 8777:8777
     depends_on:
-      config:
-        condition: service_healthy
+      - config
     logging:
       options:
         max-size: "10m"
         max-file: "10"
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-
-  gateway:
-    build: gateway
-    image: gary/bestbudget-gateway
-    restart: always
-    ports:
-      - 8080:8080
-    depends_on:
-      config:
-        condition: service_healthy
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
 
   auth-service:
     build: auth-service
-    image: gary/bestbudget-auth-service
+    image: bestbook/auth-service
     restart: always
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-      NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
-      STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
-      ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
-      MONGODB_PASSWORD: $MONGODB_PASSWORD
     ports:
-      - 8011:8011
+      - 5000:5000
     depends_on:
-      config:
-        condition: service_healthy
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  auth-mongodb:
-    build: mongodb
-    image: gary/bestbudget-mongodb
-    restart: always
-    environment:
-      MONGODB_PASSWORD: $MONGODB_PASSWORD
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  monitoring:
-    build: monitoring
-    image: gary/bestbudget-monitoring
-    restart: always
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    ports:
-      - 8089:8089
-      - 8989:8989
-    depends_on:
-      config:
-        condition: service_healthy
+      - config
+      - mysql
     logging:
       options:
         max-size: "10m"
