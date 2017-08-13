@@ -1,49 +1,61 @@
-version: '3.1'
+version: '2.1'
 services:
   mysql:
     image: mysql/mysql-server:5.7
-    ports:
-      - 3308:3306
+    container_name: bestbook-mysql
+    restart: on-failure
     environment:
       MYSQL_DATABASE: "bestbook"
       MYSQL_USER: "bestbook"
       MYSQL_PASSWORD: "1bestbook!"
       MYSQL_RANDOM_ROOT_PASSWORD: "true"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
 
   config:
     build: config
     image: bestbook/config
-    restart: always
-    ports:
-      - 8888:8888
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
+    container_name: bestbook-config
+    restart: on-failure
 
   registry:
     build: registry
     image: bestbook/registry
-    restart: always
-    ports:
-      - 8777:8777
+    container_name: bestbook-registry
+    restart: on-failure
     depends_on:
-      - config
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
+      config:
+        condition: service_healthy
 
-  auth-service:
+  gateway:
+    build: gateway
+    image: bestbook/gateway
+    container_name: bestbook-gateway
+    restart: on-failure
+    ports:
+      - 8080:4000
+    depends_on:
+      config:
+        condition: service_healthy
+
+  auth-service-1:
     build: auth-service
     image: bestbook/auth-service
-    restart: always
-    ports:
-      - 5000:5000
+    container_name: bestbook-auth-service-1
+    restart: on-failure
     depends_on:
-      - config
-      - mysql
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
+      config:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+
+  auth-service-2:
+    build: auth-service
+    image: bestbook/auth-service
+    container_name: bestbook-auth-service-2
+    restart: on-failure
+    depends_on:
+      config:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy

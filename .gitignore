@@ -8,6 +8,7 @@
 .idea/
 *.iml
 logs
+*.log
 
 # Mac
 .DS_Store
