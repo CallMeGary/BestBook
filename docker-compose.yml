@@ -14,13 +14,13 @@ services:
 
   config:
     build: config
-    image: bestbook/config
+    image: guanlin84/bestbook-config
     container_name: bestbook-config
     restart: on-failure
 
   registry:
     build: registry
-    image: bestbook/registry
+    image: guanlin84/bestbook-registry
     container_name: bestbook-registry
     restart: on-failure
     depends_on:
@@ -29,7 +29,7 @@ services:
 
   gateway:
     build: gateway
-    image: bestbook/gateway
+    image: guanlin84/bestbook-gateway
     container_name: bestbook-gateway
     restart: on-failure
     ports:
@@ -40,7 +40,7 @@ services:
 
   auth-service-1:
     build: auth-service
-    image: bestbook/auth-service
+    image: guanlin84/bestbook-auth-service
     container_name: bestbook-auth-service-1
     restart: on-failure
     depends_on:
@@ -51,7 +51,7 @@ services:
 
   auth-service-2:
     build: auth-service
-    image: bestbook/auth-service
+    image: guanlin84/bestbook-auth-service
     container_name: bestbook-auth-service-2
     restart: on-failure
     depends_on:
