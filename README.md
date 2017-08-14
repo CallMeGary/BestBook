@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/CallMeGary/BestBook.svg?branch=master)](https://travis-ci.org/sqshq/PiggyMetrics) 
