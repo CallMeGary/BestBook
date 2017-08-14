@@ -13,28 +13,30 @@ after_success:
   #TAG
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
-  - echo TAG=$TAG
-
   # CONFIG SERVICE
   - export CONFIG=callmegary/bestbook-config
   - docker build -t $CONFIG:$TRAVIS_COMMIT ./config
   - docker tag $CONFIG:$TRAVIS_COMMIT $CONFIG:$TAG
   - docker push $CONFIG
+  - docker rmi $CONFIG:$TRAVIS_COMMIT
 
   # REGISTRY
   - export REGISTRY=callmegary/bestbook-registry
   - docker build -t $REGISTRY:$TRAVIS_COMMIT ./registry
   - docker tag $REGISTRY:$TRAVIS_COMMIT $REGISTRY:$TAG
   - docker push $REGISTRY
+  - docker rmi $REGISTRY:$TRAVIS_COMMIT
 
   # GATEWAY
   - export GATEWAY=callmegary/bestbook-gateway
   - docker build -t $GATEWAY:$TRAVIS_COMMIT ./gateway
   - docker tag $GATEWAY:$TRAVIS_COMMIT $GATEWAY:$TAG
   - docker push $GATEWAY
+  - docker rmi $GATEWAY:$TRAVIS_COMMIT
 
   # AUTH SERVICE
   - export AUTH_SERVICE=callmegary/bestbook-auth-service
   - docker build -t $AUTH_SERVICE:$TRAVIS_COMMIT ./auth-service
   - docker tag $AUTH_SERVICE:$TRAVIS_COMMIT $AUTH_SERVICE:$TAG
   - docker push $AUTH_SERVICE
+  - docker rmi $AUTH_SERVICE:$TRAVIS_COMMIT
