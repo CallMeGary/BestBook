@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    database: HSQL
+    hibernate.ddl-auto: create-drop
+
+  datasource:
+    driverClassName: org.hsqldb.jdbcDriver
+    url: jdbc:hsqldb:mem:bookstore-service
+    initialize: true
+
+  jackson:
+    default-property-inclusion: non_null

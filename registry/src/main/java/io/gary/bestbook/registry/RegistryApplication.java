@@ -1,4 +1,4 @@
-package io.gary.bestbudget.registry;
+package io.gary.bestbook.registry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
