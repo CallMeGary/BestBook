@@ -13,6 +13,8 @@ after_success:
   #TAG
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
+  - echo TAG=$TAG
+
   # CONFIG SERVICE
   - export CONFIG=callmegary/bestbook-config
   - docker build -t $CONFIG:$COMMIT ./config
