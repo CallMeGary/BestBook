@@ -104,7 +104,6 @@
                 <version>${maven-release-plugin.version}</version>
                 <configuration>
                     <pushChanges>false</pushChanges>
-                    <localCheckout>true</localCheckout>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <tagBase>https://github.com/CallMeGary/BestBook/tags</tagBase>
