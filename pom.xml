@@ -105,7 +105,7 @@
                 <configuration>
                     <pushChanges>false</pushChanges>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <tagNameFormat>${project.artifactId}-@{project.version}</tagNameFormat>
                     <tagBase>https://github.com/CallMeGary/BestBook/tags</tagBase>
                 </configuration>
             </plugin>
