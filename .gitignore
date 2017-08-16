@@ -15,3 +15,5 @@ logs
 
 # Maven
 target/
+*.releaseBackup
+release.properties
