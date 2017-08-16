@@ -20,10 +20,9 @@
     </modules>
 
     <scm>
-        <url>https://github.com/CallMeGary/BestBook</url>
         <connection>scm:git:https://github.com/CallMeGary/BestBook.git</connection>
-        <developerConnection>scm:git:git@github.com:CallMeGary/BestBook.git</developerConnection>
-      <tag>HEAD</tag>
+        <developerConnection>scm:git:https://github.com:CallMeGary/BestBook.git</developerConnection>
+        <tag>HEAD</tag>
   </scm>
 
     <properties>
