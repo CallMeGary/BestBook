@@ -21,7 +21,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/CallMeGary/BestBook.git</connection>
-        <developerConnection>scm:git:https://github.com:CallMeGary/BestBook.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/CallMeGary/BestBook.git</developerConnection>
         <tag>HEAD</tag>
   </scm>
 
