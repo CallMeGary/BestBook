@@ -4,7 +4,7 @@
     <parent>
         <groupId>io.gary.bestbook</groupId>
         <artifactId>bestbook</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>auth-service</artifactId>
