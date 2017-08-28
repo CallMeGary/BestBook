@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTHORITIES;
@@ -24,6 +25,9 @@ public class User implements UserDetails {
 
     @Column
     private String emailAddress;
+
+    @Column
+    private LocalDateTime registeredAt;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return NO_AUTHORITIES;

@@ -1,7 +1,13 @@
 version: '2.1'
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: bestbook-rabbitmq
+    restart: on-failure
+
   mysql:
     image: mysql/mysql-server:5.7
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;'
     container_name: bestbook-mysql
     restart: on-failure
     environment:
@@ -38,10 +44,10 @@ services:
       config:
         condition: service_healthy
 
-  auth-service-1:
+  auth-service:
     build: auth-service
     image: callmegary/bestbook-auth-service
-    container_name: bestbook-auth-service-1
+    container_name: bestbook-auth-service
     restart: on-failure
     depends_on:
       config:
@@ -49,10 +55,10 @@ services:
       mysql:
         condition: service_healthy
 
-  auth-service-2:
-    build: auth-service
-    image: callmegary/bestbook-auth-service
-    container_name: bestbook-auth-service-2
+  book-service:
+    build: book-service
+    image: callmegary/bestbook-book-service
+    container_name: bestbook-book-service
     restart: on-failure
     depends_on:
       config:

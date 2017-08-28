@@ -1,4 +1,4 @@
-package io.gary.bestbook.auth.security;
+package io.gary.bestbook.auth.config;
 
 import io.gary.bestbook.auth.service.security.DatabaseUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 
 @Configuration
 @EnableAuthorizationServer
-public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
-
-    private TokenStore tokenStore = new InMemoryTokenStore();
+public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     @Qualifier("authenticationManagerBean")
@@ -26,22 +24,30 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private DatabaseUserDetailsService userDetailsService;
 
+    private TokenStore tokenStore = new InMemoryTokenStore();
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // @formatter:off
-        clients.inMemory()
-			.withClient("browser")
-			.authorizedGrantTypes("refresh_token", "password")
-			.scopes("ui");
-		// @formatter:on
+        clients
+            .inMemory()
+                .withClient("browser")
+                .authorizedGrantTypes("refresh_token", "password")
+                .accessTokenValiditySeconds(1800)
+                .refreshTokenValiditySeconds(3600)
+                .scopes("ui")
+            .and()
+                .withClient("book-service")
+                .secret("1book-service!")
+                .authorizedGrantTypes("client_credentials")
+                .accessTokenValiditySeconds(100)
+                .scopes("server");
+        // @formatter:on
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints
-                .tokenStore(tokenStore)
-                .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+        endpoints.tokenStore(tokenStore).authenticationManager(authenticationManager).userDetailsService(userDetailsService);
     }
 
     @Override

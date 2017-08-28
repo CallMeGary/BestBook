@@ -6,8 +6,14 @@ zuul:
 
   routes:
     auth-service:
-        path: /auth/**
+        path: /uaa/**
         serviceId: auth-service
+        stripPrefix: false
+        sensitiveHeaders:
+
+    book-service:
+        path: /book/**
+        serviceId: book-service
         stripPrefix: false
         sensitiveHeaders:
 

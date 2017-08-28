@@ -24,7 +24,7 @@ public class UserService {
         return repository.findAll();
     }
 
-    public void createUser(User user) {
+    public User createUser(User user) {
 
         Optional<User> existing = repository.findByUsername(user.getUsername());
 
@@ -34,8 +34,9 @@ public class UserService {
 
         user.setPassword(encoder.encode(user.getPassword()));
 
-        repository.save(user);
+        User created = repository.save(user);
 
         log.info("New user has been created: {}", user.getUsername());
+        return created;
     }
 }

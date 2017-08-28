@@ -1,17 +1,17 @@
-package io.gary.bestbook.auth;
+package io.gary.bestbook.book;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AuthServiceApplication.class)
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@SpringApplicationConfiguration(classes = AuthServiceApplication.class)
-public class AuthServiceApplicationTests {
+@SpringBootTest(classes = BookServiceApplication.class)
+public class BookServiceApplicationTests {
 
     @Test
+    @Ignore
     public void contextLoads() {
     }
 

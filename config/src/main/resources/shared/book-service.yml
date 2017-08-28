@@ -1,3 +1,12 @@
+security:
+  oauth2:
+    client:
+      clientId: book-service
+      clientSecret: 1book-service!
+      accessTokenUri: http://auth-service:5000/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server
+
 spring:
   jpa:
     database: MYSQL
@@ -13,5 +22,5 @@ spring:
     default-property-inclusion: non_null
 
 server:
-  context-path: /uaa
-  port: 5000
+  context-path: /book
+  port: 6000
