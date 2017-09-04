@@ -49,8 +49,8 @@ class BookController {
 
         Book bookData = mapper.fromDto(bookDto);
         bookData.setCreatedBy(principal.getName());
-        bookData.setLastModifiedBy(principal.getName());
         bookData.setCreatedAt(LocalDateTime.now());
+        bookData.setLastModifiedBy(principal.getName());
         bookData.setLastModifiedAt(LocalDateTime.now());
 
         return mapper.toDto(bookService.createBook(bookData));
@@ -62,10 +62,10 @@ class BookController {
     }
 
     @PutMapping("/books/{id}")
-    BookDto updateBook(@PathVariable Long id, @RequestBody @Valid BookDto bookDto) {
+    BookDto updateBook(@PathVariable Long id, @RequestBody @Valid BookDto bookDto, Principal principal) {
 
         Book bookData = mapper.fromDto(bookDto.withId(id));
-        bookData.setCreatedAt(LocalDateTime.now());
+        bookData.setLastModifiedBy(principal.getName());
         bookData.setLastModifiedAt(LocalDateTime.now());
 
         return mapper.toDto(bookService.updateBook(bookData));
