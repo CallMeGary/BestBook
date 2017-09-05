@@ -10,6 +10,6 @@ import java.util.Collection;
 public interface AuthServiceClient {
 
     @GetMapping("/uaa/users")
-    Collection<UserDto> getAllUsers();
+    Collection<UserDto> listAllUsers();
 
 }

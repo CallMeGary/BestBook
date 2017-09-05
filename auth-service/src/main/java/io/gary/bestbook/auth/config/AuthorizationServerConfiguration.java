@@ -41,6 +41,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .secret("1book-service!")
                 .authorizedGrantTypes("client_credentials")
                 .accessTokenValiditySeconds(100)
+                .scopes("server")
+            .and()
+                .withClient("notification-service")
+                .secret("1notification-service!")
+                .authorizedGrantTypes("client_credentials")
+                .accessTokenValiditySeconds(100)
                 .scopes("server");
         // @formatter:on
     }

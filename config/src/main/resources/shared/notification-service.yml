@@ -1,0 +1,22 @@
+security:
+  oauth2:
+    client:
+      clientId: notification-service
+      clientSecret: 1notification-service!
+      accessTokenUri: http://auth-service:5000/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server
+
+  jackson:
+    default-property-inclusion: non_null
+
+bestbook:
+  rabbitmq:
+    user:
+      exchange-name: bestbook.user
+      registered-queue-name: bestbook.user.registered
+    book:
+      exchange-name: bestbook.book
+      created-queue-name: bestbook.book.created
+      updated-queue-name: bestbook.book.updated
+      deleted-queue-name: bestbook.book.deleted

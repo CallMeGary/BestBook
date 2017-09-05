@@ -3,6 +3,9 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: bestbook-rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
     restart: on-failure
 
   mysql:
@@ -64,4 +67,13 @@ services:
       config:
         condition: service_healthy
       mysql:
+        condition: service_healthy
+
+  notification-service:
+    build: notification-service
+    image: callmegary/bestbook-notification-service
+    container_name: bestbook-notification-service
+    restart: on-failure
+    depends_on:
+      config:
         condition: service_healthy

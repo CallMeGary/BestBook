@@ -15,3 +15,10 @@ spring:
 server:
   context-path: /uaa
   port: 5000
+
+
+bestbook:
+  rabbitmq:
+    user:
+      exchange-name: bestbook.user
+      registered-queue-name: bestbook.user.registered

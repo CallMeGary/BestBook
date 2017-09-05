@@ -24,3 +24,12 @@ spring:
 server:
   context-path: /book
   port: 6000
+
+
+bestbook:
+  rabbitmq:
+    book:
+      exchange-name: bestbook.book
+      created-queue-name: bestbook.book.created
+      updated-queue-name: bestbook.book.updated
+      deleted-queue-name: bestbook.book.deleted

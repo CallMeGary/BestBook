@@ -5,13 +5,11 @@ import io.gary.bestbook.book.errors.BookNotFoundException;
 import io.gary.bestbook.book.model.Book;
 import io.gary.bestbook.book.model.UserDto;
 import io.gary.bestbook.book.repository.BookRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class BookService {
@@ -23,7 +21,7 @@ public class BookService {
     private AuthServiceClient authServiceClient;
 
     @Transactional(readOnly = true)
-    public List<Book> findAllBooks() {
+    public Collection<Book> listAllBooks() {
         return bookRepository.findAll();
     }
 
@@ -39,18 +37,21 @@ public class BookService {
 
     @Transactional
     public Book updateBook(Book bookData) {
-        findByBookIdOrThrow(bookData.getId());
+        Book existingBook = findByBookIdOrThrow(bookData.getId());
+        bookData.setCreatedAt(existingBook.getCreatedAt());
+        bookData.setCreatedBy(existingBook.getCreatedBy());
         return bookRepository.save(bookData);
     }
 
     @Transactional
-    public void deleteBook(Long bookId) {
-        findByBookIdOrThrow(bookId);
+    public Book deleteBook(Long bookId) {
+        Book book = findByBookIdOrThrow(bookId);
         bookRepository.delete(bookId);
+        return book;
     }
 
     public Collection<UserDto> listAllUsers() {
-        return authServiceClient.getAllUsers();
+        return authServiceClient.listAllUsers();
     }
 
     private Book findByBookIdOrThrow(Long bookId) {

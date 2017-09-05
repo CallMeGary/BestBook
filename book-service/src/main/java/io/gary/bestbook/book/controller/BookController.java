@@ -1,6 +1,7 @@
 package io.gary.bestbook.book.controller;
 
 import io.gary.bestbook.book.EntityMapper;
+import io.gary.bestbook.book.client.BookEventRabbitClient;
 import io.gary.bestbook.book.model.Book;
 import io.gary.bestbook.book.model.BookDto;
 import io.gary.bestbook.book.model.UserDto;
@@ -33,14 +34,17 @@ class BookController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private BookEventRabbitClient rabbitClient;
+
     @GetMapping("/users")
     Collection<UserDto> listAllUsers() {
         return bookService.listAllUsers();
     }
 
     @GetMapping("/books")
-    Collection<BookDto> findAllBooks() {
-        return bookService.findAllBooks().stream().map(mapper::toDto).collect(toList());
+    Collection<BookDto> listAllBooks() {
+        return bookService.listAllBooks().stream().map(mapper::toDto).collect(toList());
     }
 
     @PostMapping("/books")
@@ -53,7 +57,9 @@ class BookController {
         bookData.setLastModifiedBy(principal.getName());
         bookData.setLastModifiedAt(LocalDateTime.now());
 
-        return mapper.toDto(bookService.createBook(bookData));
+        BookDto result = mapper.toDto(bookService.createBook(bookData));
+
+        return rabbitClient.publishBookCreatedEvent(result);
     }
 
     @GetMapping("/books/{id}")
@@ -68,13 +74,18 @@ class BookController {
         bookData.setLastModifiedBy(principal.getName());
         bookData.setLastModifiedAt(LocalDateTime.now());
 
-        return mapper.toDto(bookService.updateBook(bookData));
+        BookDto result = mapper.toDto(bookService.updateBook(bookData));
+
+        return rabbitClient.publishBookUpdatedEvent(result);
     }
 
     @DeleteMapping("/books/{id}")
     @ResponseStatus(NO_CONTENT)
     void deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
+
+        BookDto result = mapper.toDto(bookService.deleteBook(id));
+
+        rabbitClient.publishBookDeletedEvent(result);
     }
 
 }

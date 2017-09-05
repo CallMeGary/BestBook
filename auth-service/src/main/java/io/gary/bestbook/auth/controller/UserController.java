@@ -1,6 +1,7 @@
 package io.gary.bestbook.auth.controller;
 
 import io.gary.bestbook.auth.EntityMapper;
+import io.gary.bestbook.auth.client.UserEventRabbitClient;
 import io.gary.bestbook.auth.domain.User;
 import io.gary.bestbook.auth.domain.UserDto;
 import io.gary.bestbook.auth.service.UserService;
@@ -30,6 +31,9 @@ class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserEventRabbitClient rabbitClient;
+
     @GetMapping
     @RequestMapping(method = GET)
     @PreAuthorize("#oauth2.hasScope('server')")
@@ -48,6 +52,8 @@ class UserController {
         User newUser = mapper.fromDto(userDto);
         newUser.setRegisteredAt(LocalDateTime.now());
 
-        return mapper.toDto(userService.createUser(newUser));
+        UserDto result = mapper.toDto(userService.createUser(newUser));
+
+        return rabbitClient.publishUserRegisteredEvent(result);
     }
 }
