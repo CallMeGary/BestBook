@@ -13,9 +13,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>config</module>
-        <module>registry</module>
-        <module>gateway</module>
+        <module>_config</module>
+        <module>_registry</module>
+        <module>_gateway</module>
         <module>auth-service</module>
         <module>book-service</module>
         <module>notification-service</module>

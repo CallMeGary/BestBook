@@ -22,27 +22,31 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
 
   config:
-    build: config
+    build: _config
     image: callmegary/bestbook-config
     container_name: bestbook-config
+    ports:
+      - 8888:8888
     restart: on-failure
 
   registry:
-    build: registry
+    build: _registry
     image: callmegary/bestbook-registry
     container_name: bestbook-registry
+    ports:
+      - 8777:8777
     restart: on-failure
     depends_on:
       config:
         condition: service_healthy
 
   gateway:
-    build: gateway
+    build: _gateway
     image: callmegary/bestbook-gateway
     container_name: bestbook-gateway
-    restart: on-failure
     ports:
-      - 8080:4000
+      - 4000:4000
+    restart: on-failure
     depends_on:
       config:
         condition: service_healthy
@@ -51,6 +55,8 @@ services:
     build: auth-service
     image: callmegary/bestbook-auth-service
     container_name: bestbook-auth-service
+    ports:
+      - 5000:5000
     restart: on-failure
     depends_on:
       config:
@@ -62,6 +68,8 @@ services:
     build: book-service
     image: callmegary/bestbook-book-service
     container_name: bestbook-book-service
+    ports:
+      - 6000:6000
     restart: on-failure
     depends_on:
       config:
